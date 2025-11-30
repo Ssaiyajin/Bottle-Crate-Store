@@ -214,4 +214,6 @@ Run unit and integration tests:
 Keep changes small and focused. Include tests where appropriate.
 
 ## ✔ Author
-**Nihar Sawant**
+**Nihar Sawant**  
+DevOps & Software Engineer passionate about automation, backend systems, and cloud technologies.
+
