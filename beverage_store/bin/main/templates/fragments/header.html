@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-dark text-white" th:fragment="header">
+
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        <div class="header">
+            <div sec:authorize="isAuthenticated()" id="welcome">
+                Welcome <span sec:authentication="name"></span></div>
+            <div id="rightbox">
+                <nav class="links">
+                    <a class="one" href="beverages.html" th:href="@{/beverages}">Home</a>
+                    <a sec:authorize="hasRole('CUSTOMER') || isAuthenticated()" class="one" th:href="@{/userProfile}">Your Profile</a>
+                    <a sec:authorize="hasRole('CUSTOMER') || isAuthenticated()" class="one" th:href="@{/orders}">Your Orders</a>
+                    <a sec:authorize="hasRole('ROLE_ADMIN')" class="one" th:href="@{/orders}">All Orders</a>
+                    <a sec:authorize="hasRole('ROLE_ADMIN')" class="one" th:href="@{/addnewbottle}">Add Bottle</a>
+                    <a sec:authorize="hasRole('ROLE_ADMIN')" class="one" th:href="@{/addnewcrate}">Add Crate</a>
+                    <a sec:authorize="isAnonymous()" class="one" th:href="@{/login}">Login</a>
+                    <a sec:authorize="isAnonymous()" class="one" th:href="@{/register}">Register</a>
+                    <a sec:authorize="isAuthenticated()" class="one" th:href="@{/logout}">Logout</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</nav>
+</body>
+</html>
+
+
+

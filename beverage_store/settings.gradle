@@ -1,0 +1,9 @@
+rootProject.name = 'beverage_store'
+
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        mavenCentral()
+        google()
+    }
+}

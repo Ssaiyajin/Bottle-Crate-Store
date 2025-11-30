@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link th:rel="stylesheet" th:href="@{/css/style.css}" href="../static/css/style.css"/>
+    <title>User Info</title>
+</head>
+<body>
+<div th:replace="fragments/header.html :: header"></div>
+
+<div id="boxes">
+    <div id="leftbox">
+        <h1>User Information</h1>
+    </div>
+</div>
+
+<!-- iterate usersinfo (usually a single user) -->
+<div th:each="userinfo : ${usersinfo}">
+    <section>
+        <h2 th:text="${userinfo.username}">Username</h2>
+
+        <!-- Update address form bound to userdto (controller provides userdto) -->
+        <form th:object="${userdto}"
+              th:action="@{/usersinfo/updateaddress/{user_id}(user_id=${userinfo.username})}"
+              method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+            <table>
+                <caption>Billing Address</caption>
+                <tr>
+                    <td><label for="billing-street">Street</label></td>
+                    <td><input id="billing-street" required th:field="*{billingAddresses[0].street}" type="text"/></td>
+                </tr>
+                <tr>
+                    <td><label for="billing-number">Number</label></td>
+                    <td><input id="billing-number" required th:field="*{billingAddresses[0].number}" type="text"/></td>
+                </tr>
+                <tr>
+                    <td><label for="billing-postalcode">Postal Code</label></td>
+                    <td><input id="billing-postalcode" required th:field="*{billingAddresses[0].postalcode}" type="text"/></td>
+                </tr>
+            </table>
+
+            <table>
+                <caption>Delivery Address</caption>
+                <tr>
+                    <td><label for="delivery-street">Street</label></td>
+                    <td><input id="delivery-street" required th:field="*{deliveryAddresses[0].street}" type="text"/></td>
+                </tr>
+                <tr>
+                    <td><label for="delivery-number">Number</label></td>
+                    <td><input id="delivery-number" required th:field="*{deliveryAddresses[0].number}" type="text"/></td>
+                </tr>
+                <tr>
+                    <td><label for="delivery-postalcode">Postal Code</label></td>
+                    <td><input id="delivery-postalcode" required th:field="*{deliveryAddresses[0].postalcode}" type="text"/></td>
+                </tr>
+            </table>
+
+            <div style="margin-top:12px;">
+                <button type="submit" class="button2">Save Address</button>
+            </div>
+        </form>
+
+        <!-- Checkout form (separate) -->
+        <form th:action="@{/shoppingcart/checkout}" method="post" style="margin-top:12px;">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+            <button type="submit" class="button1" th:if="${items != null and items.size() > 0}">Checkout</button>
+        </form>
+
+    </section>
+</div>
+
+</body>
+</html>

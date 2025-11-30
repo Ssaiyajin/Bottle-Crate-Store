@@ -1,0 +1,12 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        mavenCentral()
+        google()
+    }
+}
+rootProject.name = 'Bottle-Crate-Store'
+
+include ':beverage_store'
+include ':mail_sending_function'
+include ':pdf_generation_function'

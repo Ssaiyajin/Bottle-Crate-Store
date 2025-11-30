@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <link th:href="@{/css/style.css}" rel="stylesheet"/>
+    <title>Checkout</title>
+</head>
+<body>
+<div th:replace="fragments/header.html :: header"></div>
+
+<div id="boxes">
+    <div id="leftbox">
+        <h1>Checkout Page</h1>
+    </div>
+</div>
+
+<section>
+    <h2 th:text="'Thank you for your purchase'">Thank you for Shopping!</h2>
+
+    <div>
+        <a th:href="@{/beverages}">Return to home</a>
+    </div>
+
+    <div th:if="${orderItems == null or #lists.isEmpty(orderItems)}">
+        <p>No items found for this order.</p>
+    </div>
+
+    <div th:if="${orderItems != null and !#lists.isEmpty(orderItems)}">
+        <div class="order-meta">
+            <p><strong>Order ID:</strong> <span th:text="${orderID}">-</span></p>
+            <p><strong>Customer:</strong> <span th:text="${orderCustomer}">-</span></p>
+            <p><strong>Total:</strong> <span th:text="${#numbers.formatDecimal(orderPrice, 0, 'COMMA', 2, 'POINT')}">0.00</span> €</p>
+        </div>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Pos</th>
+                <th>Image</th>
+                <th>Beverage</th>
+                <th>Unit Price</th>
+                <th>Quantity</th>
+                <th>Line Total</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item, iterStat : ${orderItems}">
+                <td th:text="${iterStat.index + 1}">1</td>
+
+                <td>
+                    <img th:src="${item.beverage.pic}" th:alt="${item.beverage.name}" width="100" />
+                </td>
+
+                <td th:text="${item.beverage.name}">Beverage Name</td>
+
+                <td th:text="${#numbers.formatDecimal(item.price, 0, 'COMMA', 2, 'POINT')}">0.00</td>
+
+                <td th:text="${item.quantity}">0</td>
+
+                <td th:text="${#numbers.formatDecimal(item.price * item.quantity, 0, 'COMMA', 2, 'POINT')}">0.00</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+</body>
+</html>

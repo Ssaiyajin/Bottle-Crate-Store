@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8"/>
+        <title>Order</title>
+    </head>
+    <body>
+        <div class="table">
+            <table>
+                <thead>
+                    <tr>
+                        <th scope="col">Item picture</th>
+                        <th scope="col">Item name</th>
+                        <th scope="col">Item Quantity</th>
+                        <th scope="col">Beverage price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="item : ${order.listOfItems}">
+                        <td>
+                            <img width="100" th:src="${item.beveragePic}" th:alt="${item.beverageName}" />
+                        </td>
+                        <td th:text="${item.beverageName}">Beverage Name</td>
+                        <td th:text="${item.quantity}">0</td>
+                        <td th:text="${item.price}">0.00</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3" style="text-align:right; font-weight:bold;">Total</td>
+                        <td th:text="${order.totalPrice}">0.00</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </body>
+</html>

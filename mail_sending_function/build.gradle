@@ -1,0 +1,61 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+application {
+    mainClass = 'cloudfunction.Function'
+}
+
+group 'cloudfunction'
+version '1.0-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    }
+}
+
+// declare custom configuration used below
+configurations {
+    invoker
+}
+
+repositories {
+    mavenCentral()
+    google()
+}
+
+dependencies {
+    // Align google cloud library versions (resolves guava/listenablefuture conflicts)
+    implementation platform('com.google.cloud:libraries-bom:26.3.0')
+
+    // Google Cloud Storage (version from BOM)
+    implementation 'com.google.cloud:google-cloud-storage'
+
+    // Jakarta Mail - use a released version
+    implementation 'com.sun.mail:jakarta.mail:2.0.1'
+
+    // Cloud Functions API
+    implementation 'com.google.cloud.functions:functions-framework-api:1.0.4'
+
+    invoker 'com.google.cloud.functions.invoker:java-function-invoker:1.0.0-alpha-2-rc5'
+}
+
+tasks.register('runFunction', JavaExec) {
+    group = 'application'
+    description = 'Run the function locally using the Cloud Functions Java invoker.'
+
+    mainClass.set('com.google.cloud.functions.invoker.runner.Invoker')
+    classpath = files(configurations.invoker)
+
+    def defaultTarget = project.findProperty('runFunction.target') ?: (application.mainClass ?: 'cloudfunction.Function')
+    def defaultPort = project.findProperty('runFunction.port') ?: '8082'
+
+    args('--target', defaultTarget, '--port', defaultPort)
+
+    doFirst {
+        // supply the app classpath to the invoker
+        args('--classpath', files(configurations.runtimeClasspath, sourceSets.main.output).asPath)
+    }
+}

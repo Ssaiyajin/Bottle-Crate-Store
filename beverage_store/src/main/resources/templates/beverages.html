@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Beverage Service</title>
+    <link th:rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+
+<meta name="author" content="Deepika Arneja"/>
+<meta name="Description"
+      content="Template to display bottles/crates on home page and added spinner to input quantity"/>
+
+<div th:replace="fragments/header.html :: header"></div>
+
+<div id="boxes">
+    <div id="leftbox">
+        <h1>Beverage Store</h1>
+    </div>
+</div>
+
+<div class="cart">
+    <a class="isDisabled" th:if="${listofitems == 0}">Shopping Cart</a>
+    <a class="isEnabled" th:if="${listofitems > 0}" th:href="@{/shoppingcart}"
+       th:text="'Shopping Cart (' + ${listofitems} + ')'"></a>
+</div>
+
+<table>
+    <thead>
+    <tr>
+        <th>Beverage Image</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Available</th>
+        <th>Quantity</th>
+        <th>Buy</th>
+    </tr>
+    </thead>
+    <tbody>
+        <tr th:each="beverage : ${beverages}">
+            <td>
+                <img width="130" height="150" th:src="${beverage.pic}" th:alt="${beverage.name}" />
+            </td>
+
+            <td th:text="${beverage.name}">Name</td>
+
+            <td th:text="${beverage.price} + ' €'">0.00 €</td>
+
+            <td th:text="${beverage.inStock}">0</td>
+
+            <td>
+                <div th:if="${beverage.inStock > 0}">
+                    <input
+                        th:id="${'quantity-' + beverage.id}"
+                        name="quantity"
+                        type="number"
+                        class="form-control"
+                        min="1"
+                        th:max="${beverage.inStock}"
+                        value="1" />
+                </div>
+                <div th:if="${beverage.inStock == 0}">
+                    <span>Out of stock</span>
+                </div>
+            </td>
+
+            <td>
+                <div th:if="${beverage.inStock > 0}">
+                    <form th:action="@{/shoppingcart/add}" method="post">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                        <input type="hidden" name="beverageId" th:value="${beverage.id}" />
+                        <!-- quantity input - keep in sync with above by selecting via id on client side if needed -->
+                        <input type="hidden" name="quantity" th:value="${1}" th:attrappend="value=${#request.getParameter('quantity-' + beverage.id) ?: '1'}"/>
+                        <input type="submit" value="Add to Cart">
+                    </form>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</body>
+</html>

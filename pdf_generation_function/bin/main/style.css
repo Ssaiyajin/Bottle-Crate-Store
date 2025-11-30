@@ -1,0 +1,185 @@
+:root{
+  --primary: #5D6975;
+  --accent:  #C1CED9;
+  --bg:      #FFFFFF;
+  --text:    #001028;
+  --zebra:   #F5F5F5;
+  --font-stack: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.clearfix::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+a {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+body {
+  position: relative;
+  /* explicit A4 sizes (PDF generators often respect mm) */
+  width: 210mm;
+  height: 297mm;
+  margin: 0 auto;
+  color: var(--text);
+  background: var(--bg);
+  font-family: var(--font-stack);
+  font-size: 12px;
+  -webkit-font-smoothing: antialiased;
+}
+
+header {
+  padding: 10px 0;
+  margin-bottom: 30px;
+}
+
+#logo {
+  text-align: center;
+  margin-bottom: 10px;
+}
+#logo img {
+  width: 90px;
+  height: auto;
+  display: inline-block;
+}
+
+h1 {
+  border-top: 1px solid var(--primary);
+  border-bottom: 1px solid var(--primary);
+  color: var(--primary);
+  font-size: 2.4em;
+  line-height: 1.4em;
+  font-weight: normal;
+  text-align: center;
+  margin: 0 0 20px 0;
+  /* avoid external images in header for reliable PDF rendering */
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+#project {
+  float: left;
+}
+#project span {
+  color: var(--primary);
+  text-align: right;
+  width: 52px;
+  margin-right: 10px;
+  display: inline-block;
+  font-size: 0.8em;
+}
+#company {
+  float: right;
+  text-align: right;
+}
+#project div,
+#company div {
+  white-space: nowrap;
+}
+
+/* Table layout */
+.table {
+  width: 100%;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin: 0;
+  table-layout: fixed; /* stable columns for PDF */
+  font-size: 12px;
+}
+
+/* zebra rows for readability */
+table tr:nth-child(odd) td {
+  background: var(--zebra);
+}
+
+/* headings */
+table th {
+  text-align: left;
+  padding: 8px 12px;
+  color: var(--primary);
+  border-bottom: 1px solid var(--accent);
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+/* cells */
+table td {
+  padding: 12px;
+  vertical-align: middle;
+  text-align: left;
+  word-wrap: break-word;
+}
+
+/* numeric columns */
+table td.qty,
+table td.unit,
+table td.total,
+table td.grand,
+table td.price {
+  text-align: right;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* descriptive columns */
+table .service,
+table .desc {
+  text-align: left;
+}
+
+/* image styling */
+table img,
+.table img {
+  max-width: 100px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  object-fit: contain;
+}
+
+/* emphasis for grand total row */
+table td.grand {
+  border-top: 1px solid var(--primary);
+  font-weight: 700;
+}
+
+/* notices and footer */
+#notices .notice {
+  color: var(--primary);
+  font-size: 1.2em;
+}
+
+footer {
+  color: var(--primary);
+  width: 100%;
+  height: 30px;
+  position: absolute;
+  bottom: 0;
+  border-top: 1px solid var(--accent);
+  padding: 8px 0;
+  text-align: center;
+  font-size: 0.85em;
+}
+
+/* small print adjustments for PDF generators */
+@media print {
+  body {
+    margin: 0;
+    -webkit-print-color-adjust: exact;
+  }
+}
